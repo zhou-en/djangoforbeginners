@@ -6,8 +6,10 @@ name = "pypi"
 [packages]
 django = "*"
 gunicorn = "==19.9.0"
+"psycopg2-binary" = "*"
+django-crontab = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.7"
+python_version = "3.6"

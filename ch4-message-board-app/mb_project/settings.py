@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'django_crontab',
     'posts.apps.PostsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -76,8 +77,11 @@ WSGI_APPLICATION = 'mb_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'HOST': 'db',   # set in docker-compose.yml
+        'PORT': 5432    # default postgres port
     }
 }
 
@@ -119,3 +123,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Cron job
+CRONTAB_COMMAND_SUFFIX = '2>&1'
+CRONJOBS = [
+    (
+        # Run once a week at 1 am on Monday morning    0 1 * * 1
+        # '*/1 * * * * export LOGGING_DIR=/var/log/ch4-message-board-app/;',
+        '*/1 * * * *',
+        'django.core.management.call_command', ['cronjob'], {},
+        '> /var/log/ch4-message-board-app/app.log'
+    ),
+]
