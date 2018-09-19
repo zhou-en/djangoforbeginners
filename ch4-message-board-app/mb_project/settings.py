@@ -132,6 +132,25 @@ CRONJOBS = [
         # '*/1 * * * * export LOGGING_DIR=/var/log/ch4-message-board-app/;',
         '*/1 * * * *',
         'django.core.management.call_command', ['cronjob'], {},
-        '> /var/log/ch4-message-board-app/app.log'
+        '>> /log/app.log'
     ),
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '/log/app.log',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}

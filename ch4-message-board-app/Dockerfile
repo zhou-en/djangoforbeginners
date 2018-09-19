@@ -5,12 +5,19 @@ FROM python:3.6-slim
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-ENV LOGGING_DIR=/var/log/ch4-message-board-app
-RUN mkdir /var/log/ch4-message-board-app
-RUN touch /var/log/ch4-message-board-app/app.log
-RUN chmod 777 /var/log/ch4-message-board-app/app.log
+RUN mkdir /log
+RUN touch /log/app.log
+RUN chmod -R 777 /log
+VOLUME /log
+
+
 RUN apt-get update -y
-RUN apt-get install -y cron
+RUN apt-get install cron -y
+
+
+#ADD crontab /etc/cron.d/crontab
+#RUN chmod 0600 /etc/cron.d/crontab
+
 # Set work directory
 WORKDIR /code
 
@@ -26,3 +33,5 @@ COPY . /code/
 
 RUN set -xe \
     && python manage.py crontab add
+
+CMD ["cron", "-f"]
