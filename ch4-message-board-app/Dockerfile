@@ -12,7 +12,7 @@ VOLUME /log
 
 
 RUN apt-get update -y
-RUN apt-get install cron -y
+RUN apt-get install cron rsyslog -y
 
 
 #ADD crontab /etc/cron.d/crontab
@@ -34,4 +34,4 @@ COPY . /code/
 RUN set -xe \
     && python manage.py crontab add
 
-CMD ["cron", "-f"]
+CMD service cron restart
