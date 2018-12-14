@@ -12,7 +12,7 @@ VOLUME /log
 
 
 RUN apt-get update -y
-RUN apt-get install cron -y
+RUN apt-get install cron rsyslog -y
 
 
 #ADD crontab /etc/cron.d/crontab
@@ -35,7 +35,5 @@ RUN set -xe \
 
 # ENTRYPOINT ["/bin/sh", "-c", "service start cron"]
 
-# ENTRYPOINT ["/bin/sh", "-c"]
 CMD [ "sh", "-c", "python /code/manage.py migrate --noinput && service cron start && python /code/manage.py runserver 0.0.0.0:8000"]
-# CMD c
 # ENTRYPOINT exec /code/start.sh
