@@ -7,8 +7,6 @@ services:
             - postgres_data:/var/lib/postgresql/data
     web:
         build: .
-        command: python /code/manage.py migrate --noinput
-        command: python /code/manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/code
         ports:

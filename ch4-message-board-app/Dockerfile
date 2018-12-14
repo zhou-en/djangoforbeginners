@@ -25,7 +25,6 @@ WORKDIR /code
 RUN pip install --upgrade pip
 RUN pip install pipenv
 COPY ./Pipfile /code/Pipfile
-
 RUN pipenv install --deploy --system --skip-lock --dev
 
 # Copy project
@@ -34,4 +33,9 @@ COPY . /code/
 RUN set -xe \
     && python manage.py crontab add
 
-CMD ["cron", "-f"]
+# ENTRYPOINT ["/bin/sh", "-c", "service start cron"]
+
+# ENTRYPOINT ["/bin/sh", "-c"]
+CMD [ "sh", "-c", "python /code/manage.py migrate --noinput && service cron start && python /code/manage.py runserver 0.0.0.0:8000"]
+# CMD c
+# ENTRYPOINT exec /code/start.sh
